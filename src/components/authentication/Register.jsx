@@ -17,8 +17,6 @@ const Register = () => {
     password: "",
     role: "",
     phoneNumber: "",
-    pancard: "",
-    adharcard: "",
     file: "",
   });
 
