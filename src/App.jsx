@@ -5,6 +5,8 @@ import Login from "./components/authentication/Login"
 import Register from "./components/authentication/Register"
 import Home from "./components/components_lite/Home"
 import { Toaster } from "./components/ui/sonner"
+import { Provider } from "react-redux"
+import store from "./redux/store"
 //import ResumeAI from "./pages/ResumeAI"
 
 const appRouter = createBrowserRouter([
@@ -17,8 +19,10 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <div >
-      <RouterProvider router={appRouter} />
-      <Toaster></Toaster>
+      <Provider store={store}>
+        <RouterProvider router={appRouter} />
+        <Toaster></Toaster>
+      </Provider>
     </div>
   )
 }

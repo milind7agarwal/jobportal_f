@@ -7,6 +7,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { USER_API_ENDPOINT } from "@/utils/data.js";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
+import store from "../../redux/store";
 
 const Login = () => {
    const [input, setInput] = useState({
@@ -15,6 +18,8 @@ const Login = () => {
     });
   
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { loading } = useSelector((store) => store.auth);
 
     const changeEventHandler = (e) => {
       setInput({ ...input, [e.target.name]: e.target.value });
@@ -26,6 +31,7 @@ const Login = () => {
     formData.append("email", input.email);
     formData.append("password", input.password);
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_ENDPOINT}/login`, input, {
         headers: {
           "Content-Type": "application/json",
@@ -39,6 +45,9 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Registration failed");
+    }
+    finally {
+      dispatch(setLoading(false));
     }
   }
   return (
@@ -98,7 +107,7 @@ const Login = () => {
                </div>
             </RadioGroup>
                 </div>
-                {/* {loading ? (
+                {loading ? (
                   <div className="flex items-center justify-center my-10">
                     <div className="spinner-border text-blue-600" role="status">
                       <span className="sr-only">Loading...</span>
@@ -111,14 +120,7 @@ const Login = () => {
                   >
                     Login
                   </button>
-                )} */} 
-                <button
-                    type="submit"
-                    className="block w-full py-3 my-3 text-white bg-primary hover:bg-primary/90 rounded-md"
-                >
-                Login
-                </button>
-      
+                )} 
                 <p className="text-gray-500 text-md my-2">
                   Doesn't have an account?{" "}
                   <Link to="/register" className="text-blue-700 font-semibold">
