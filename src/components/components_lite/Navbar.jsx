@@ -6,7 +6,7 @@ import { Avatar, AvatarImage } from "../ui/avatar.jsx";
 import { LogOut, User2 } from "lucide-react";
 
 const Navbar = () => {
-    const user = false;
+    const user = true;
 
   return (
     <div className="bg-white">
@@ -18,8 +18,8 @@ const Navbar = () => {
                 <ul className="flex font-medium gap-4 text-gray-500">
                     <li> Home</li>
                     <li> <span className="text-rose-500">Resume AI</span></li>
-                    <li> Browse</li>
-                    <li> Job</li>
+                    <li>Browse</li>
+                    <li>Job</li>
                 </ul>
                 {!user ? (
                     <div className="flex items-center gap-4"> 
