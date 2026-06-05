@@ -36,7 +36,7 @@ const Job1 = () => {
               <Badge  className="text-white font-bold">3 days ago</Badge>
                        <div className="flex items-center justify-end gap-4 my-2">
             <Button variant="outline">Details</Button>
-            <Button variant="outline" >Save for later</Button>
+            <Button variant="outline">Save for later</Button>
           </div>
           </div>
 

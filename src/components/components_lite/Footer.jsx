@@ -12,12 +12,15 @@ const Footer = () => {
       >
         <p>© All rights reserved.</p>
         <p>
-          Powered by <a href="https://github.com/milind7agarwal">Milind Agrawal</a>
+          Powered by{' '}
+          <a href="https://github.com/milind7agarwal">Milind Agrawal</a>
         </p>
-        <p>
-          <div>Privacy Policy </div>
+        <div>
+          <div>Privacy Policy</div>
           <div>Terms of Service</div>
-        </p>
+        </div>
+
+
       </div>
     </div>
   );
