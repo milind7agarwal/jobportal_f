@@ -9,6 +9,7 @@ import { Toaster } from "./components/ui/sonner"
 import { Provider } from "react-redux"
 import store from "./redux/store"
 import Profile from "./components/components_lite/Profile"
+import Description from "./components/components_lite/Description"
 
 //import ResumeAI from "./pages/ResumeAI"
 
@@ -18,6 +19,7 @@ const appRouter = createBrowserRouter([
   {path: "/register", element: <Register />}, 
   {path: "/Profile", element: <Profile />},
   {path: "/Jobs", element: <Jobs/>},
+  {path: "/description/:id", element: <Description/>},
 ])
 
 function App() {

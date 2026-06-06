@@ -1,9 +1,12 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom";
 import {Button} from '../ui/Button';
 import {Bookmark} from 'lucide-react';
 import { Avatar, AvatarImage } from "../ui/avatar.jsx";
 import { Badge } from "../ui/badge";
 const Job1 = () => {
+  const jobId = "12345";
+  const navigate = useNavigate();
   return (
     <div className="flex items-center justify-center gap-4 my-2">
     <div className="border p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-300" >
@@ -35,7 +38,7 @@ const Job1 = () => {
               <Badge  className="text-white font-bold">$2000</Badge>
               <Badge  className="text-white font-bold">3 days ago</Badge>
                        <div className="flex items-center justify-end gap-4 my-2">
-            <Button variant="outline">Details</Button>
+            <Button onClick={() => navigate(`/description/${jobId}`) } variant="outline">Details</Button>
             <Button variant="outline">Save for later</Button>
           </div>
           </div>
@@ -48,4 +51,4 @@ const Job1 = () => {
   )
 }
 
-export default Job1
+export default Job1;
