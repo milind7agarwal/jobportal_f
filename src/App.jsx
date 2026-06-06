@@ -8,13 +8,16 @@ import Jobs from "./components/components_lite/Jobs"
 import { Toaster } from "./components/ui/sonner"
 import { Provider } from "react-redux"
 import store from "./redux/store"
+import Profile from "./components/components_lite/Profile"
+
 //import ResumeAI from "./pages/ResumeAI"
 
 const appRouter = createBrowserRouter([
   {path: "/", element: <Home />},
   {path: "/login", element: <Login />},
-  {path: "/register", element: <Register />},
-  {path: "/Jobs", element: <Jobs/>}
+  {path: "/register", element: <Register />}, 
+  {path: "/Profile", element: <Profile />},
+  {path: "/Jobs", element: <Jobs/>},
 ])
 
 function App() {

@@ -1,13 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover.jsx";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "../ui/avatar.jsx";
 import { LogOut, User2 } from "lucide-react";
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
-    const user = true;
-
+    const {user} = useSelector((store) => store.auth); 
   return (
     <div className="bg-white">
         <div className="container mx-auto flex items-center justify-between py-4">
@@ -18,7 +18,6 @@ const Navbar = () => {
                 <ul className="flex font-medium gap-4 text-gray-500">
                     <Link to={"/"}> Home</Link>  
                     <li> <span className="text-rose-500">Resume AI</span></li>
-                    <li>Browse</li>
                     <Link to= {"/Jobs"}>Job</Link>
                 </ul>
                 {!user ? (
@@ -45,8 +44,8 @@ const Navbar = () => {
                             <h3>Milind Agrawal</h3>
                         </div>
                         <div className="flex flex-col gap-1">
-                            <Button variant="outline"><User2/>Profile </Button>
-                            <Button variant="destructive"><LogOut/>Logout </Button>
+                            <Link to="/Profile"> <Button variant="outline" className="w-full justify-start gap-2"><User2/>Profile</Button></Link> 
+                            <Button variant="destructive" className="w-full justify-start gap-2"><LogOut/>Logout </Button>
                         </div>
                     </PopoverContent>
                 </Popover>

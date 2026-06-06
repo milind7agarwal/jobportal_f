@@ -20,7 +20,6 @@ const Footer = () => {
           <div>Terms of Service</div>
         </div>
 
-
       </div>
     </div>
   );
