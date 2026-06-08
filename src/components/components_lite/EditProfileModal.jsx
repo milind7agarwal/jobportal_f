@@ -42,6 +42,7 @@ const EditProfileModal = ({ open, setOpen }) => {
     }
 
     try {
+      setLoading(true);
       const res = await axios.post(
         `${USER_API_ENDPOINT}/profile/update`,
         formData,
@@ -60,10 +61,11 @@ const EditProfileModal = ({ open, setOpen }) => {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
-    setOpen(false);
-
-    console.log(input);
+      setOpen(false);
+      console.log(input);
   };
 
   const FileChangehandler = (e) => {

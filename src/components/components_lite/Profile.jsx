@@ -6,12 +6,14 @@ import { Contact, Mail, Pen } from "lucide-react";
 import { Badge } from "../ui/badge";
 import AppliedJobs from "./AppliedJob";
 import EditProfileModal from "./EditProfileModal";
+import { useSelector } from "react-redux";
 
 const skill = ["JavaScript", "React", "Node.js", "Express", "MongoDB", "HTML", "CSS"];
-const isResume = false;
+const isResume = true;
 
 const Profile = () => {
   const [open, setOpen] = useState(false);
+  const { user } = useSelector((store) => store.auth);
   return (
     <div>
       <Navbar />
@@ -23,12 +25,12 @@ const Profile = () => {
         <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 w-full">
             <Avatar className="w-24 h-24 sm:w-32 sm:h-32">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarImage src={user?.profile?.profilePicture} alt="@shadcn" />
             </Avatar>
             <div className="text-center sm:text-left">
-              <h2 className="text-xl sm:text-2xl font-bold mb-2">Milind Agrawal</h2>
+              <h2 className="text-xl sm:text-2xl font-bold mb-2">{user?.fullname}</h2>
               <p className="text-sm sm:text-base text-gray-600 mb-4">
-                A passionate software developer with experience in building web applications using modern technologies. Skilled in JavaScript, React, and Node.js.
+               {user?.profile?.bio}
               </p>
             </div>
           </div>
@@ -41,11 +43,13 @@ const Profile = () => {
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 mb-6">
           <div className="flex items-center gap-2 text-gray-700">
             <Mail className="w-5 h-5" />
-            <span className="text-sm sm:text-base">milind@example.com</span>
+            <a href={`mailto:${user?.email}`} className="text-blue-500 hover:underline">
+              {user?.email}
+            </a>
           </div>
           <div className="flex items-center gap-2 text-gray-700">
             <Contact className="w-5 h-5" />
-            <span className="text-sm sm:text-base">+1 234 567 890</span>
+            <span className="text-sm sm:text-base">{user?.phoneNumber}</span>
           </div>
         </div>
 
@@ -53,8 +57,8 @@ const Profile = () => {
         <div className="mb-6">
           <h3 className="text-lg sm:text-xl font-semibold mb-3">Skills</h3>
           <div className="flex flex-wrap items-center gap-2">
-            {skill.length !== 0 ? (
-              skill.map((item, index) => (
+            {user?.profile?.skills.length != 0 ? (
+              user?.profile?.skills.map((item, index) => (
                 <Badge key={index} className="text-xs sm:text-sm">
                   {item}
                 </Badge>
@@ -69,10 +73,10 @@ const Profile = () => {
         <div className="mb-4">
           <h3 className="text-lg sm:text-xl font-semibold mb-3">Resume</h3>
           <div>
-            {isResume ? (
+            { (user?.profile?.resume) ? (
               <a
                 target="_blank"
-                href={"http://resume.com"}
+                href={user?.profile?.resume}
                 download="resume.pdf"
                 className="text-green-600 font-medium hover:underline cursor-pointer text-sm sm:text-base"
               >

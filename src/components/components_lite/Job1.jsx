@@ -37,7 +37,7 @@ const Job1 = () => {
               <Badge  className="text-white font-bold">Remote</Badge>
               <Badge  className="text-white font-bold">$2000</Badge>
               <Badge  className="text-white font-bold">3 days ago</Badge>
-                       <div className="flex items-center justify-end gap-4 my-2">
+              <div className="flex items-center justify-end gap-4 my-2">
             <Button onClick={() => navigate(`/description/${jobId}`) } variant="outline">Details</Button>
             <Button variant="outline">Save for later</Button>
           </div>

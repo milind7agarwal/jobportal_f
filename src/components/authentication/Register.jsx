@@ -9,6 +9,8 @@ import { USER_API_ENDPOINT } from "@/utils/data";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "@/redux/authSlice";
+import { Loader2 } from "lucide-react";
+
 
 const Register = () => {
   const [input, setInput] = useState({
@@ -160,7 +162,7 @@ const Register = () => {
           {loading ? (
                   <div className="flex items-center justify-center my-10">
                     <div className="spinner-border text-blue-600" role="status">
-                      <span className="sr-only">Loading...</span>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{" "}
                     </div>
                   </div>
                 ) : (

@@ -4,10 +4,37 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover.jsx";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "../ui/avatar.jsx";
 import { LogOut, User2 } from "lucide-react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from "sonner";
+import axios from "axios"; // Import axios
+import { setUser } from "@/redux/authSlice";
+import { USER_API_ENDPOINT } from "@/utils/data";
+
 
 const Navbar = () => {
     const {user} = useSelector((store) => store.auth); 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const logoutHandler = async () => {
+        try {
+        const res = await axios.post(`${USER_API_ENDPOINT}/logout`, {
+            withCredentials: true,
+        });
+        if (res && res.data && res.data.success) {
+            dispatch(setUser(null));
+            navigate("/");
+            toast.success(res.data.message);
+        } else {
+            console.error("Error logging out:", res.data);
+        }
+        } catch (error) {
+        console.error("Axios error:", error);
+        if (error.response) {
+            console.error("Error response:", error.response.data);
+        }
+        toast.error("Error logging out. Please try again.");
+        }
+    };
   return (
     <div className="bg-white">
         <div className="container mx-auto flex items-center justify-between py-4">
@@ -33,19 +60,19 @@ const Navbar = () => {
                     <Popover>
                     <PopoverTrigger asChild>
                         <Avatar className="cursor-pointer">
-                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarImage src={user?.profile?.profilePicture} alt="https://github.com/shadcn.png" />
                         </Avatar>
                     </PopoverTrigger>
                     <PopoverContent className="w-40">
                         <div className= "flex items-center gap-2">
                             <Avatar className="cursor-pointer">
-                                <AvatarImage src="https://github.com/shadcn.png" />
+                                <AvatarImage src={user?.profile?.profilePicture} alt="https://github.com/shadcn.png" />
                             </Avatar>
-                            <h3>Milind Agrawal</h3>
+                            <h3>{user?.fullname}</h3>
                         </div>
                         <div className="flex flex-col gap-1">
                             <Link to="/Profile"> <Button variant="outline" className="w-full justify-start gap-2"><User2/>Profile</Button></Link> 
-                            <Button variant="destructive" className="w-full justify-start gap-2"><LogOut/>Logout </Button>
+                            <Button variant="destructive" className="w-full justify-start gap-2" onClick={logoutHandler}><LogOut/>Logout </Button>
                         </div>
                     </PopoverContent>
                 </Popover>
