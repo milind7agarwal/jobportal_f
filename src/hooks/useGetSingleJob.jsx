@@ -4,13 +4,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const useGetAllJobs = () => {
+const useSingleAllJob = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchAllJobs = async () => {
+    const fetchSingleJobs = async () => {
       setLoading(true);
       setError(null);
       try {
@@ -34,10 +34,10 @@ const useGetAllJobs = () => {
       }
     };
 
-    fetchAllJobs();
+    fetchSingleJobs();
   }, [dispatch]);
 
   return { loading, error };
 };
 
-export default useGetAllJobs;
+export default useSingleAllJob;

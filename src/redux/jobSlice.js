@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const jobSlice = createSlice({
-  name: "jobs",
+  name: "job",
   initialState :{
     allJobs: [],
   },
@@ -14,7 +14,6 @@ const jobSlice = createSlice({
 
 export const { setAllJobs } = jobSlice.actions;
 
-// Named export for environments/bundlers that don't resolve default exports reliably
 export const jobReducer = jobSlice.reducer;
 
 export default jobSlice.reducer;
