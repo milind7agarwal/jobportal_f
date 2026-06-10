@@ -10,6 +10,10 @@ import { Provider } from "react-redux"
 import store from "./redux/store"
 import Profile from "./components/components_lite/Profile"
 import Description from "./components/components_lite/Description"
+import Companies from  "./components/admincomponent/Companies";
+import CompanyCreate from "./components/admincomponent/CompanyCreate";
+import CompanySetup from "./components/admincomponent/CompanySetup";
+
 
 //import ResumeAI from "./pages/ResumeAI"
 
@@ -20,6 +24,10 @@ const appRouter = createBrowserRouter([
   {path: "/Profile", element: <Profile />},
   {path: "/Jobs", element: <Jobs/>},
   {path: "/description/:id", element: <Description/>},
+  {path: "/admin/companies", element: <Companies/> },
+  {path: "/admin/companies/create",element: <CompanyCreate />},
+  {path: "/admin/companies/:id",element: <CompanySetup/>},
+
 ])
 
 function App() {

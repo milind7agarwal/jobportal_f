@@ -43,10 +43,36 @@ const Navbar = () => {
             </div>
             <div className="flex items-center gap-6">
                 <ul className="flex font-medium gap-4 text-gray-500">
-                    <Link to={"/"}> Home</Link>  
+                    {user && user.role === "employer" ? (
+                        <>
+                            <li>
+                            <Link to={"/admin/companies"}>Companies</Link>
+                            </li>
+                            <li>
+                            <Link to={"/admin/jobs"}>Jobs</Link>
+                            </li>
+                        </>
+                        ) : (
+                        <>
+                            <li>
+                            {" "}
+                            <Link to={"/"}> Home</Link>  
+                            </li>
+                            <li>
+                            {" "}
+                            <li> <span className="text-rose-500">Resume AI</span></li>
+                            </li>
+                            <li>
+                            {" "}
+                            <Link to= {"/Jobs"}>Job</Link>
+                            </li>
+                        </>
+                        )}
+                    </ul>
+                    {/* <Link to={"/"}> Home</Link>  
                     <li> <span className="text-rose-500">Resume AI</span></li>
                     <Link to= {"/Jobs"}>Job</Link>
-                </ul>
+                </ul> */}
                 {!user ? (
                     <div className="flex items-center gap-4"> 
                         <Link to="/login">
@@ -71,7 +97,9 @@ const Navbar = () => {
                             <h3>{user?.fullname}</h3>
                         </div>
                         <div className="flex flex-col gap-1">
+                        {user && user.role === "jobseeker" && (
                             <Link to="/Profile"> <Button variant="outline" className="w-full justify-start gap-2"><User2/>Profile</Button></Link> 
+                        )}
                             <Button variant="destructive" className="w-full justify-start gap-2" onClick={logoutHandler}><LogOut/>Logout </Button>
                         </div>
                     </PopoverContent>

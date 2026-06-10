@@ -2,7 +2,12 @@ import React from "react";
 import { Badge } from "../ui/badge";
 
 const JobCards = ({job}) => {
- 
+    const daysAgoFunction = (mongodbTime) => {
+    const createdAt = new Date(mongodbTime);
+    const currentTime = new Date();
+    const timeDifference = currentTime - createdAt;
+    return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
+  };
   return (
     <div className="border p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-300">
         <div>
@@ -19,7 +24,7 @@ const JobCards = ({job}) => {
             <Badge  className="text-white font-bold">{job.jobType}</Badge>
             <Badge  className="text-white font-bold">{job.location}</Badge>
             <Badge  className="text-white font-bold">${job.salary?.toLocaleString()}</Badge>
-            <Badge  className="text-white font-bold">3 days ago</Badge>
+            <Badge  className="text-white font-bold">{daysAgoFunction(job?.createdAt) === 0? "Today": `${daysAgoFunction(job?.createdAt)} days ago`}</Badge>
         </div>
     </div>
   );

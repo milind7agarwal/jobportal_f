@@ -1,12 +1,13 @@
 import React from "react";
 import JobCards from "./JobCards";
 import { useSelector } from "react-redux";
-import useGetAllJobs from "@/hooks/useGetAllJobs"; // Make sure the path to your hook is correct
+import useGetAllJobs from "@/hooks/useGetAllJobs"; 
 
 const LatestJobs = () => {
   useGetAllJobs(); 
+
+  
   const allJobs = useSelector((state) => state.job?.allJobs || []); 
-  console.log("👉 UI COMPONENT ALL JOBS STATE:", allJobs);
   return (
     <div className="max-w-7xl mx-auto my-20">
       <h2 className="text-4xl font-bold">
