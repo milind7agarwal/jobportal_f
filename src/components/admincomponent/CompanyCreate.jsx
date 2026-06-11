@@ -7,21 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { COMPANY_API_ENDPOINT } from "@/utils/data";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
-import { setSingleCompany } from "@/redux/companySlice"; //  FIXED: Capitalized 'S' to match typical naming
+import { setSingleCompany } from "@/redux/companyslice";
 import axios from "axios";
 
 const CompanyCreate = () => {
   const navigate = useNavigate();
+  const [companyName, setCompanyName] = useState();
   const dispatch = useDispatch();
-  
-  const [companyName, setCompanyName] = useState(""); 
-
   const registerNewCompany = async () => {
-    if (!companyName.trim()) {
-      toast.error("Company name cannot be empty!");
-      return;
-    }
-
     try {
       const res = await axios.post(
         `${COMPANY_API_ENDPOINT}/register`,
@@ -41,26 +34,20 @@ const CompanyCreate = () => {
       }
     } catch (error) {
       console.log(error);
-      // Added error toast notification so the user knows if the server rejected it
-      toast.error(error.response?.data?.message || "Failed to register company.");
     }
   };
-
   return (
     <div>
       <Navbar />
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto">
         <div className="my-10">
-          <h1 className="font-bold text-2xl">Create Your Company</h1>
-          <p className="text-gray-600">Give your company a temporary name. You can change this later.</p>
+          <h1 className="font-bold text-2xl ">Company Name</h1>
+          <p className="text-gray-600">Company Description</p>
         </div>
-        
-        <Label htmlFor="company-name">Company Name</Label>
+        <Label>Company Name</Label>
         <Input
-          id="company-name"
           type="text"
-          value={companyName} 
-          placeholder="e.g., Microsoft, Google, Acme Corp"
+          placeholder="Company Name"
           className="my-2"
           onChange={(e) => setCompanyName(e.target.value)}
         />
