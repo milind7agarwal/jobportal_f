@@ -9,8 +9,12 @@ import {
   TableRow,
 } from "../ui/table";
 import { Badge } from "../ui/badge";
+import { useSelector } from "react-redux";
 
 const AppliedJob = () => {
+  // Grab the data from Redux safely
+  const { allAppliedJobs } = useSelector((store) => store.job);
+
   return (
     <div>
       <Table>
@@ -24,14 +28,36 @@ const AppliedJob = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-        {[1, 2, 3, 4, 5].map((item, index) => (
-            <TableRow key={index}>
-            <TableCell>23-12-2024</TableCell>
-            <TableCell>Software Engineer</TableCell>
-            <TableCell>Microsoft</TableCell>
-            <TableCell className="text-right"><Badge className="bg-green-600">Selected</Badge></TableCell>
+          {/* Added '?.' here to prevent the crash */}
+          {!allAppliedJobs || allAppliedJobs.length <= 0 ? (
+            <TableRow>
+              <TableCell colSpan={4} className="text-center py-4">
+                You have not applied to any jobs yet.
+              </TableCell>
             </TableRow>
-        ))}
+          ) : (
+            allAppliedJobs.map((appliedJob) => (
+              <TableRow key={appliedJob._id}>
+                {/* Added optional chaining to split() just in case createdAt is missing */}
+                <TableCell>{appliedJob?.createdAt?.split("T")[0] || "N/A"}</TableCell>
+                <TableCell>{appliedJob.job?.title}</TableCell>
+                <TableCell>{appliedJob.job?.company?.name}</TableCell>
+                <TableCell className="text-right">
+                  <Badge
+                    className={`${
+                      appliedJob?.status === "rejected"
+                        ? "bg-red-600"
+                        : appliedJob?.status === "accepted"
+                        ? "bg-green-600"
+                        : "bg-gray-600"
+                    }`}
+                  >
+                    {appliedJob?.status}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>

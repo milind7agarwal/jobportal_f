@@ -3,7 +3,7 @@ import authReducer from './authSlice';
 import jobReducer from './jobSlice';
 import { createRoot } from "react-dom/client";
 import companyReducer from "./companyslice";
-
+import applicationReducer from "./applicationSlice";
 
 import {
   persistStore,
@@ -26,6 +26,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   job: jobReducer,
   company: companyReducer,
+  application: applicationReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
