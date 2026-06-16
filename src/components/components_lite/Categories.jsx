@@ -9,7 +9,7 @@ import {
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { setSearchedQuery } from "@/redux/jobSlice";
+import { setSearchedQuery } from "@/redux/jobSlice";
  
 
  
@@ -34,10 +34,10 @@ const Category = [
 const Categories = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-//   const searchjobHandler = (query) => {
-//       dispatch(setSearchedQuery(query));
-//       navigate("/browse");
-//   }
+  const searchjobHandler = (query) => {
+      dispatch(setSearchedQuery(query));
+      navigate("/browse");
+  }
   return (
     <div>
       <div>
@@ -53,7 +53,7 @@ const Categories = () => {
           {Category.map((category, index) => {
             return (
               <CarouselItem className=" md:basis-1/2 lg:basis-1/3 flex justify-center ">
-                <Button>
+                <Button onClick={() => searchjobHandler(category)}>
                   {category}
                 </Button>
               </CarouselItem>

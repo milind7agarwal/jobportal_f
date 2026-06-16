@@ -16,7 +16,7 @@ import CompanySetup from "./components/admincomponent/CompanySetup";
 import AdminJobs from "./components/admincomponent/AdminJobs"
 import PostJob from "./components/admincomponent/PostJob";
 import Applicants from "./components/admincomponent/Applicants"
-
+import Browse from "./components/components_lite/Browse"
 //import ResumeAI from "./pages/ResumeAI"
 
 const appRouter = createBrowserRouter([
@@ -25,6 +25,7 @@ const appRouter = createBrowserRouter([
   {path: "/register", element: <Register />}, 
   {path: "/Profile", element: <Profile />},
   {path: "/Jobs", element: <Jobs/>},
+  {path: "/browse", element: <Browse/>},
   {path: "/description/:id", element: <Description/>},
   {path: "/admin/companies", element: <Companies/> },
   {path: "/admin/companies/create",element: <CompanyCreate />},

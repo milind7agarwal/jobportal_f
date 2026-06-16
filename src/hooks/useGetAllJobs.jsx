@@ -8,6 +8,7 @@ const useGetAllJobs = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { searchedQuery } = useSelector((store) => store.job);
 
   useEffect(() => {
     const fetchAllJobs = async () => {
@@ -15,7 +16,7 @@ const useGetAllJobs = () => {
       setError(null);
       try {
         const res = await axios.get(
-          `${JOB_API_ENDPOINT}/get`,
+          `${JOB_API_ENDPOINT}/get?keyword=${searchedQuery}`,
           {
             withCredentials: true,
           }

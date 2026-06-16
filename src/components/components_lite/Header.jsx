@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { Search } from "lucide-react";
 import { PiBuildingOfficeBold } from "react-icons/pi";
 import { useDispatch } from "react-redux";
-// import { setSearchedQuery } from "@/redux/jobSlice";
+import { setSearchedQuery } from "@/redux/jobSlice";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
