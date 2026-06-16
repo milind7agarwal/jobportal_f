@@ -19,11 +19,17 @@ const Login = () => {
   
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { loading } = useSelector((store) => store.auth);
+    const { user, loading } = useSelector((store) => store.auth);
 
     const changeEventHandler = (e) => {
       setInput({ ...input, [e.target.name]: e.target.value });
     };
+
+    useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
 
   const submitHandler = async (e) => {
     e.preventDefault();
