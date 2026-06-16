@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { useDispatch } from "react-redux";
+import { setSearchedQuery } from "@/redux/jobSlice";
 
 
 const filterData = [
@@ -43,12 +45,19 @@ const filterData = [
 ];
 
 const Filter = () => {
-
+  const [selectedValue, setSelectedValue] = useState("");
+  const handleChange = (value) => {
+    setSelectedValue(value);
+  };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setSearchedQuery(selectedValue));
+  }, [selectedValue]);
   return (
     <div className="w-full bg-white rounded-md">
       <h1 className="font-bold text-lg">Filter Jobs</h1>
       <hr className="mt-3" />
-      <RadioGroup>
+      <RadioGroup value={selectedValue} onValueChange={handleChange}>
         {filterData.map((data, index) => (
           <div key={index}>
             <h2 className="font-bold text-lg">{data.filterType}</h2>

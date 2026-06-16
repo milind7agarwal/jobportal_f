@@ -1,5 +1,6 @@
 import React from "react";
 import { Badge } from "../ui/badge";
+import {useNavigate} from "react-router-dom"
 
 const JobCards = ({job}) => {
     const daysAgoFunction = (mongodbTime) => {
@@ -8,8 +9,9 @@ const JobCards = ({job}) => {
     const timeDifference = currentTime - createdAt;
     return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
   };
+    const navigate = useNavigate()
   return (
-    <div className="border p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-300">
+    <div onClick={() => navigate(`/description/${job._id}`) } className="border p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-300">
         <div>
             <h1 className = "text-lg font-md">{job.company.name}</h1>
             <p className="text-md text-gray-600">India</p>
