@@ -60,7 +60,7 @@ const Navbar = () => {
                             </li>
                             <li>
                             {" "}
-                            <li> <span className="text-rose-500">Resume AI</span></li>
+                            <Link to= {"/ai"} className="text-rose-500">Resume AI</Link>
                             </li>
                             <li>
                             {" "}

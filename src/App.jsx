@@ -18,9 +18,12 @@ import PostJob from "./components/admincomponent/PostJob";
 import Applicants from "./components/admincomponent/Applicants"
 import Browse from "./components/components_lite/Browse"
 import ProtectedRoute from "./components/admincomponent/ProtectedRoute"
-//import ResumeAI from "./pages/ResumeAI"
+import ResumeAI from "./components/aicomponent/ai"
+import Report from "./components/aicomponent/report"
+import { InterviewProvider } from "./interview.context.jsx";
 
 const appRouter = createBrowserRouter([
+  //user
   {path: "/", element: <Home />},
   {path: "/login", element: <Login />},
   {path: "/register", element: <Register />}, 
@@ -28,23 +31,30 @@ const appRouter = createBrowserRouter([
   {path: "/Jobs", element: <Jobs/>},
   {path: "/browse", element: <Browse/>},
   {path: "/description/:id", element: <Description/>},
+  //admin
   {path: "/admin/companies", element: <ProtectedRoute><Companies/></ProtectedRoute> },
   {path: "/admin/companies/create",element: <ProtectedRoute><CompanyCreate /></ProtectedRoute>},
   {path: "/admin/companies/:id",element: <ProtectedRoute><CompanySetup/></ProtectedRoute>},
   {path: "/admin/jobs", element:<ProtectedRoute><AdminJobs/></ProtectedRoute> },
   {path: "/admin/jobs/create",element: <ProtectedRoute><PostJob /></ProtectedRoute>},
-  { path: "/admin/jobs/:id/applicants", element: <ProtectedRoute><Applicants /></ProtectedRoute>}
+  { path: "/admin/jobs/:id/applicants", element: <ProtectedRoute><Applicants /></ProtectedRoute>},
+  //ai
+  {path: "/ai", element: <ResumeAI/>},
+  {path: "/interview/:interviewId", element: <Report/>}
 ])
 
 function App() {
   return (
-    <div >
-      <Provider store={store}>
-        <RouterProvider router={appRouter} />
-        <Toaster></Toaster>
-      </Provider>
+    <div>
+      <InterviewProvider>
+        <Provider store={store}>
+          <RouterProvider router={appRouter} />
+          <Toaster></Toaster>
+        </Provider>
+      </InterviewProvider>
     </div>
-  )
+  );
 }
+
 
 export default App

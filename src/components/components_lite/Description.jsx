@@ -9,15 +9,7 @@ import { setSingleJob } from "@/redux/jobSlice";
 import { toast } from "sonner";
 import Navbar from "./Navbar";
 import { APPLICATION_API_ENDPOINT } from "../../utils/data";
-import { 
-  Briefcase, 
-  MapPin, 
-  DollarSign, 
-  Calendar, 
-  Users, 
-  Layers,
-  ArrowLeft
-} from "lucide-react";
+import { Briefcase, MapPin, DollarSign, Calendar, Users, Layers,ArrowLeft} from "lucide-react";
 
 const Description = () => {
   const params = useParams();
