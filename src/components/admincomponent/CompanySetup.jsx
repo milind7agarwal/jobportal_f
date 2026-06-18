@@ -22,7 +22,6 @@ const CompanySetup = () => {
     file: null,
   });
   const { singleCompany } = useSelector((store) => store.company);
-
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -31,8 +30,7 @@ const CompanySetup = () => {
   };
 
   const changeFileHandler = (e) => {
-    const file = e.target.files?.[0];
-    setInput({ ...input, file });
+    setInput({ ...input, file: e.target.files?.[0] });
   };
 
   const submitHandler = async (e) => {
@@ -42,40 +40,26 @@ const CompanySetup = () => {
     formData.append("description", input.description);
     formData.append("website", input.website);
     formData.append("location", input.location);
-    if (input.file) {
-      formData.append("file", input.file);
-    }
+    if (input.file) formData.append("file", input.file);
+
     try {
       setLoading(true);
-      const res = await axios.put(
-        `${COMPANY_API_ENDPOINT}/update/${params.id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      );
-      console.log(res); // Debugging API response
-
-      // Assuming a successful response has a `message` property
+      const res = await axios.put(`${COMPANY_API_ENDPOINT}/update/${params.id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      });
       if (res.status === 200 && res.data.message) {
         toast.success(res.data.message);
         navigate("/admin/companies");
-      } else {
-        throw new Error("Unexpected API response.");
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "An unexpected error occurred.";
-      toast.error(errorMessage);
+      toast.error(error.response?.data?.message || "An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
   };
 
-   useEffect(() => {
+  useEffect(() => {
     setInput({
       name: singleCompany.name || "",
       description: singleCompany.description || "",
@@ -86,76 +70,50 @@ const CompanySetup = () => {
   }, [singleCompany]);
 
   return (
-    <div>
+    <div className="min-h-screen bg-slate-50">
       <Navbar />
-      <div className="max-w-xl mx-auto my-10">
-        <form onSubmit={submitHandler}>
-          <div className="flex items-center gap-5 p-8">
+      <div className="max-w-xl mx-auto px-4 sm:px-6 py-6 sm:my-10">
+        <form onSubmit={submitHandler} className="bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
             <Button
+              type="button"
               onClick={() => navigate("/admin/companies")}
               variant="outline"
-              className="flex items-center gap-2 text-gray-500 font-semibold"
+              className="w-fit flex items-center gap-2 text-gray-500 font-semibold"
             >
-              <ArrowLeft />
-              <span>Back</span>
+              <ArrowLeft className="w-4 h-4" />
+              Back
             </Button>
-            <h1 className="font-bold text-xl">Company Setup</h1>
+            <h1 className="font-bold text-lg sm:text-xl">Company Setup</h1>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label>Company Name</Label>
-              <Input
-                type="text"
-                name="name"
-                value={input.name}
-                onChange={changeEventHandler}
-              />
+              <Input type="text" name="name" value={input.name} onChange={changeEventHandler} className="mt-1" />
             </div>
             <div>
               <Label>Description</Label>
-              <Input
-                type="text"
-                name="description"
-                value={input.description}
-                onChange={changeEventHandler}
-              />
+              <Input type="text" name="description" value={input.description} onChange={changeEventHandler} className="mt-1" />
             </div>
             <div>
               <Label>Website</Label>
-              <Input
-                type="text"
-                name="website"
-                value={input.website}
-                onChange={changeEventHandler}
-              />
+              <Input type="text" name="website" value={input.website} onChange={changeEventHandler} className="mt-1" />
             </div>
             <div>
               <Label>Location</Label>
-              <Input
-                type="text"
-                name="location"
-                value={input.location}
-                onChange={changeEventHandler}
-              />
+              <Input type="text" name="location" value={input.location} onChange={changeEventHandler} className="mt-1" />
             </div>
-            <div>
+            <div className="sm:col-span-2">
               <Label>Logo</Label>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={changeFileHandler}
-              />
+              <Input type="file" accept="image/*" onChange={changeFileHandler} className="mt-1 text-sm" />
             </div>
           </div>
           {loading ? (
-            <Button className="w-full my-4">
-              {" "}
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{" "}
+            <Button className="w-full my-4" disabled>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
             </Button>
           ) : (
-            <Button type="submit" className="w-full my-4">
-              Update
-            </Button>
+            <Button type="submit" className="w-full my-4">Update</Button>
           )}
         </form>
       </div>

@@ -20,6 +20,7 @@ import Browse from "./components/components_lite/Browse"
 import ProtectedRoute from "./components/admincomponent/ProtectedRoute"
 import ResumeAI from "./components/aicomponent/ai"
 import Report from "./components/aicomponent/report"
+import PreviousReports from "./components/aicomponent/PreviousReports"
 import { InterviewProvider } from "./interview.context.jsx";
 
 const appRouter = createBrowserRouter([
@@ -40,6 +41,7 @@ const appRouter = createBrowserRouter([
   { path: "/admin/jobs/:id/applicants", element: <ProtectedRoute><Applicants /></ProtectedRoute>},
   //ai
   {path: "/ai", element: <ResumeAI/>},
+  {path: "/ai/reports", element: <PreviousReports/>},
   {path: "/interview/:interviewId", element: <Report/>}
 ])
 

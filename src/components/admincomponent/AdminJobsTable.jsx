@@ -1,111 +1,93 @@
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table";
-
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Edit2, Eye, MoreHorizontal } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
 
 const AdminJobsTable = () => {
-  const { companies } = useSelector((store) => store.company);
   const { allAdminJobs, searchJobByText } = useSelector((store) => store.job);
   const navigate = useNavigate();
-
-  //  FIXED: Fallback to an empty array so filterJobs is never 'undefined' on initial render
   const [filterJobs, setFilterJobs] = useState([]);
 
   useEffect(() => {
-    //  FIXED: Wrapped with a safe array fallback checker
     const jobsToFilter = allAdminJobs || [];
-    
     const filteredJobs = jobsToFilter.filter((job) => {
-      if (!searchJobByText) {
-        return true;
-      }
-      
+      if (!searchJobByText) return true;
       const jobTitle = job?.title?.toLowerCase() || "";
-      //  FIXED: Added safety optional chaining to avoid crashing if company name is null
-      const companyName = job?.company?.name?.toLowerCase() || ""; 
+      const companyName = job?.company?.name?.toLowerCase() || "";
       const searchTarget = searchJobByText.toLowerCase();
-
       return jobTitle.includes(searchTarget) || companyName.includes(searchTarget);
     });
-
     setFilterJobs(filteredJobs);
   }, [allAdminJobs, searchJobByText]);
 
-  console.log("COMPANIES", companies);
-  
-  if (!companies) {
-    return <div>Loading...</div>;
+  if (filterJobs.length === 0) {
+    return (
+      <div className="bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500 text-sm">
+        No jobs posted yet.
+      </div>
+    );
   }
 
   return (
-    <div>
-      <Table>
-        <TableCaption>Your recent Posted Jobs</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Company Name</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="text-right">Action</TableHead>
-          </TableRow>
-        </TableHeader>
+    <>
+      {/* Mobile cards */}
+      <div className="space-y-3 md:hidden">
+        {filterJobs.map((job) => (
+          <div key={job._id} className="bg-white border border-slate-200 rounded-xl p-4 space-y-3">
+            <div>
+              <p className="font-semibold text-sm">{job?.title}</p>
+              <p className="text-xs text-slate-500">{job?.company?.name || "N/A"}</p>
+              <p className="text-xs text-slate-400 mt-1">{job?.createdAt?.split("T")[0] || "Recent"}</p>
+            </div>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" className="flex-1 text-xs" onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}>
+                <Eye className="w-3.5 h-3.5 mr-1" /> Applicants
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        <TableBody>
-          {/*  FIXED: Safe array check to ensure no crashing if data is processing */}
-          {filterJobs?.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={4} className="text-center py-4 text-gray-500">
-                No Job Added
-              </TableCell>
-            </TableRow>
-          ) : (
-            filterJobs?.map((job) => (
-              <TableRow key={job._id || job.id}>
-                <TableCell>{job?.company?.name || "N/A"}</TableCell>
-                <TableCell>{job?.title}</TableCell>
-                {/*  FIXED: Safeguarded split if createdAt is missing temporarily */}
-                <TableCell>{job?.createdAt ? job.createdAt.split("T")[0] : "Recent"}</TableCell>
-                <TableCell className="text-right cursor-pointer">
+      {/* Desktop table */}
+      <div className="hidden md:block overflow-x-auto bg-white border border-slate-200 rounded-xl">
+        <table className="w-full text-sm min-w-[560px]">
+          <caption className="caption-bottom py-3 text-slate-500">Your posted jobs</caption>
+          <thead>
+            <tr className="border-b text-left text-slate-500">
+              <th className="p-3 font-medium">Company</th>
+              <th className="p-3 font-medium">Role</th>
+              <th className="p-3 font-medium">Date</th>
+              <th className="p-3 font-medium text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filterJobs.map((job) => (
+              <tr key={job._id} className="border-b border-slate-100">
+                <td className="p-3">{job?.company?.name || "N/A"}</td>
+                <td className="p-3">{job?.title}</td>
+                <td className="p-3">{job?.createdAt?.split("T")[0] || "Recent"}</td>
+                <td className="p-3 text-right">
                   <Popover>
-                    <PopoverTrigger>
-                      <MoreHorizontal />
+                    <PopoverTrigger asChild>
+                      <button type="button" className="p-1 hover:bg-slate-100 rounded">
+                        <MoreHorizontal className="w-4 h-4" />
+                      </button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-32">
-                      <div
-                        onClick={() => navigate(`/admin/companies/${job._id}`)}
-                        className="flex items-center gap-2 w-fit cursor-pointer mb-1"
-                      >
-                        <Edit2 className="w-4" />
-                        <span>Edit</span>
-                      </div>
-                      <hr />
-                      <div 
-                        onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)} 
-                        className="flex items-center gap-2 w-fit cursor-pointer mt-1"
-                      >
-                        <Eye className="w-4" />
-                        <span>Applicants</span>
-                      </div>
+                    <PopoverContent className="w-36 space-y-2">
+                      <button type="button" onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)} className="flex items-center gap-2 text-sm w-full">
+                        <Eye className="w-4 h-4" /> Applicants
+                      </button>
                     </PopoverContent>
                   </Popover>
-                </TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
-    </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 

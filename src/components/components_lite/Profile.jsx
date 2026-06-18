@@ -9,99 +9,82 @@ import EditProfileModal from "./EditProfileModal";
 import { useSelector } from "react-redux";
 import useGetAppliedJobs from "@/hooks/useGetAllAppliedJobs";
 
-const skill = ["JavaScript", "React", "Node.js", "Express", "MongoDB", "HTML", "CSS"];
-const isResume = true;
-
 const Profile = () => {
   useGetAppliedJobs();
   const [open, setOpen] = useState(false);
   const { user } = useSelector((store) => store.auth);
+
   return (
-    <div>
+    <div className="min-h-screen bg-slate-50">
       <Navbar />
 
-      {/* Profile Card */}
-      <div className="max-w-7xl mx-auto my-5 md:my-10 p-4 border border-gray-300 rounded-md">
-        
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 w-full">
-            <Avatar className="w-24 h-24 sm:w-32 sm:h-32">
-              <AvatarImage src={user?.profile?.profilePicture} alt="@shadcn" />
-            </Avatar>
-            <div className="text-center sm:text-left">
-              <h2 className="text-xl sm:text-2xl font-bold mb-2">{user?.fullname}</h2>
-              <p className="text-sm sm:text-base text-gray-600 mb-4">
-               {user?.profile?.bio}
-              </p>
+      <div className="max-w-7xl mx-auto my-4 sm:my-8 px-3 sm:px-6 space-y-4 sm:space-y-6">
+        <div className="p-4 sm:p-6 border border-gray-200 rounded-xl bg-white shadow-sm">
+          <div className="flex flex-col gap-4 mb-6">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 w-full">
+              <Avatar className="w-20 h-20 sm:w-28 sm:h-28 shrink-0">
+                <AvatarImage src={user?.profile?.profilePicture} alt={user?.fullname} />
+              </Avatar>
+              <div className="text-center sm:text-left flex-1 min-w-0">
+                <h2 className="text-xl sm:text-2xl font-bold mb-1 truncate">{user?.fullname}</h2>
+                <p className="text-sm text-gray-600 leading-relaxed">{user?.profile?.bio || "No bio added yet."}</p>
+              </div>
+            </div>
+            <Button className="w-full sm:w-auto sm:self-end flex items-center justify-center gap-2" variant="outline" onClick={() => setOpen(true)}>
+              <Pen className="w-4 h-4" /> Edit Profile
+            </Button>
+          </div>
+
+          <div className="flex flex-col gap-3 mb-6">
+            <div className="flex items-center gap-2 text-gray-700 min-w-0">
+              <Mail className="w-4 h-4 shrink-0" />
+              <a href={`mailto:${user?.email}`} className="text-blue-500 hover:underline text-sm truncate">
+                {user?.email}
+              </a>
+            </div>
+            <div className="flex items-center gap-2 text-gray-700">
+              <Contact className="w-4 h-4 shrink-0" />
+              <span className="text-sm">{user?.phoneNumber || "—"}</span>
             </div>
           </div>
-          <Button className="w-full md:w-auto flex items-center justify-center gap-2" variant="outline" onClick={() => setOpen(true)}>
-            <Pen className="w-4 h-4" /> Edit Profile
-          </Button>
-        </div>
 
-        {/* Contact Info */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 mb-6">
-          <div className="flex items-center gap-2 text-gray-700">
-            <Mail className="w-5 h-5" />
-            <a href={`mailto:${user?.email}`} className="text-blue-500 hover:underline">
-              {user?.email}
-            </a>
+          <div className="mb-6">
+            <h3 className="text-base sm:text-lg font-semibold mb-3">Skills</h3>
+            <div className="flex flex-wrap gap-2">
+              {user?.profile?.skills?.length ? (
+                user.profile.skills.map((item, index) => (
+                  <Badge key={index} className="text-xs">{item}</Badge>
+                ))
+              ) : (
+                <span className="text-gray-500 text-sm">No skills added yet.</span>
+              )}
+            </div>
           </div>
-          <div className="flex items-center gap-2 text-gray-700">
-            <Contact className="w-5 h-5" />
-            <span className="text-sm sm:text-base">{user?.phoneNumber}</span>
-          </div>
-        </div>
 
-        {/* Skills */}
-        <div className="mb-6">
-          <h3 className="text-lg sm:text-xl font-semibold mb-3">Skills</h3>
-          <div className="flex flex-wrap items-center gap-2">
-            {user?.profile?.skills.length != 0 ? (
-              user?.profile?.skills.map((item, index) => (
-                <Badge key={index} className="text-xs sm:text-sm">
-                  {item}
-                </Badge>
-              ))
-            ) : (
-              <span className="text-gray-500 text-sm">No skills added yet.</span>
-            )}
-          </div>
-        </div>
-
-        {/* Resume */}
-        <div className="mb-4">
-          <h3 className="text-lg sm:text-xl font-semibold mb-3">Resume</h3>
           <div>
-            { (user?.profile?.resume) ? (
+            <h3 className="text-base sm:text-lg font-semibold mb-3">Resume</h3>
+            {user?.profile?.resume ? (
               <a
                 target="_blank"
-                href={user?.profile?.resume}
-                download="resume.pdf"
-                className="text-green-600 font-medium hover:underline cursor-pointer text-sm sm:text-base"
+                rel="noopener noreferrer"
+                href={user.profile.resume}
+                className="text-green-600 font-medium hover:underline text-sm"
               >
                 Download Resume
               </a>
             ) : (
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <span className="text-red-600 font-medium text-sm sm:text-base">No resume uploaded</span>
-              </div>
+              <span className="text-red-600 font-medium text-sm">No resume uploaded</span>
             )}
           </div>
         </div>
-      </div>
 
-      {/* Applied Jobs Section */}
-      <div className="max-w-7xl mx-auto my-5 md:my-10 p-4 border border-gray-300 rounded-md">
-        <h3 className="text-lg sm:text-xl font-semibold mb-4">Applied Jobs</h3>
-        <div className="overflow-x-auto">
-           {/* Wrapped AppliedJobs in a container with overflow-x-auto so the table inside doesn't break mobile width */}
+        <div className="p-4 sm:p-6 border border-gray-200 rounded-xl bg-white shadow-sm">
+          <h3 className="text-base sm:text-lg font-semibold mb-4">Applied Jobs</h3>
           <AppliedJobs />
         </div>
-         <EditProfileModal open={open} setOpen={setOpen} />
       </div>
+
+      <EditProfileModal open={open} setOpen={setOpen} />
     </div>
   );
 };

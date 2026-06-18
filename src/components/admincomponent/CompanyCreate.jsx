@@ -12,54 +12,57 @@ import axios from "axios";
 
 const CompanyCreate = () => {
   const navigate = useNavigate();
-  const [companyName, setCompanyName] = useState();
+  const [companyName, setCompanyName] = useState("");
   const dispatch = useDispatch();
+
   const registerNewCompany = async () => {
     try {
       const res = await axios.post(
         `${COMPANY_API_ENDPOINT}/register`,
         { companyName },
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
       if (res?.data?.success) {
         dispatch(setSingleCompany(res.data.company));
         toast.success(res.data.message);
-        const companyId = res?.data?.company?._id;
-        navigate(`/admin/companies/${companyId}`);
+        navigate(`/admin/companies/${res?.data?.company?._id}`);
       }
     } catch (error) {
       console.log(error);
+      toast.error(error.response?.data?.message || "Failed to create company");
     }
   };
-  return (
-    <div>
-      <Navbar />
-      <div className="max-w-4xl mx-auto">
-        <div className="my-10">
-          <h1 className="font-bold text-2xl ">Company Name</h1>
-          <p className="text-gray-600">Company Description</p>
-        </div>
-        <Label>Company Name</Label>
-        <Input
-          type="text"
-          placeholder="Company Name"
-          className="my-2"
-          onChange={(e) => setCompanyName(e.target.value)}
-        />
 
-        <div className="flex items-center gap-2 my-10">
-          <Button
-            variant="outline"
-            onClick={() => navigate("/admin/companies")}
-          >
-            Cancel
-          </Button>
-          <Button onClick={registerNewCompany}>Continue</Button>
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <Navbar />
+      <div className="max-w-lg mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="font-bold text-xl sm:text-2xl">Add Company</h1>
+          <p className="text-sm text-gray-600 mt-1">Register a new company to start posting jobs.</p>
+        </div>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-sm space-y-4">
+          <div>
+            <Label>Company Name</Label>
+            <Input
+              type="text"
+              placeholder="Company Name"
+              className="mt-1.5"
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 pt-2">
+            <Button variant="outline" className="w-full sm:w-auto" onClick={() => navigate("/admin/companies")}>
+              Cancel
+            </Button>
+            <Button className="w-full sm:w-auto" onClick={registerNewCompany}>
+              Continue
+            </Button>
+          </div>
         </div>
       </div>
     </div>

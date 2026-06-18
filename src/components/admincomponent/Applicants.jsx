@@ -20,19 +20,19 @@ const Applicants = () => {
           { withCredentials: true }
         );
         dispatch(setAllApplicants(res.data.job));
-        console.log(res.data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchAllApplicants();
-  }, []);
+  }, [params.id, dispatch]);
+
   return (
-    <div>
+    <div className="min-h-screen bg-slate-50">
       <Navbar />
-      <div className="max-w-7xl mx-auto">
-        <h1 className="font-bold text-xl my-5">
-          Applicants {applicants?.applications?.length}
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6 pb-8">
+        <h1 className="font-bold text-lg sm:text-xl mb-4 sm:mb-5">
+          Applicants ({applicants?.applications?.length || 0})
         </h1>
         <ApplicantsTable />
       </div>

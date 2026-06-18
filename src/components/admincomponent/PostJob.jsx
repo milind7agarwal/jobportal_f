@@ -4,13 +4,11 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
-import store from "@/redux/store";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
@@ -19,8 +17,6 @@ import { JOB_API_ENDPOINT } from "@/utils/data";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-
-const companyArray = [];
 
 const PostJob = () => {
   const [input, setInput] = useState({
@@ -36,16 +32,15 @@ const PostJob = () => {
   });
   const navigate = useNavigate();
   const { companies } = useSelector((store) => store.company);
+  const [loading, setLoading] = useState(false);
+
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
-  const [loading, setLoading] = useState(false);
 
   const selectChangeHandler = (value) => {
-    const selectedCompany = companies.find(
-      (company) => company.name.toLowerCase() === value
-    );
-    setInput({ ...input, companyId: selectedCompany._id });
+    const selectedCompany = companies.find((company) => company.name.toLowerCase() === value);
+    setInput({ ...input, companyId: selectedCompany?._id });
   };
 
   const submitHandler = async (e) => {
@@ -53,9 +48,7 @@ const PostJob = () => {
     try {
       setLoading(true);
       const res = await axios.post(`${JOB_API_ENDPOINT}/post`, input, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
       if (res.data.success) {
@@ -63,160 +56,89 @@ const PostJob = () => {
         navigate("/admin/jobs");
       } else {
         toast.error(res.data.message);
-        navigate("/admin/jobs");
       }
     } catch (error) {
-      if (error.response && error.response.data) {
-        toast.error(error.response.data.message || "Something went wrong");
-      } else {
-        toast.error("An unexpected error occurred");
-      }
-      
+      toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-slate-50">
       <Navbar />
-      <div className="flex items-center justify-center w-screen my-5">
+      <div className="flex items-start justify-center px-3 sm:px-6 py-4 sm:py-8">
         <form
           onSubmit={submitHandler}
-          className="p-8 max-w-4xl border border-gray-500 shadow-sm hover:shadow-xl hover:shadow-red-300 rounded-lg"
+          className="w-full max-w-2xl p-4 sm:p-8 border border-gray-200 shadow-sm rounded-xl bg-white"
         >
-          <div className="grid grid-cols-2 gap-5">
+          <h1 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-center">Post a New Job</h1>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
             <div>
               <Label>Title</Label>
-              <Input
-                type="text"
-                name="title"
-                value={input.title}
-                placeholder="Enter job title"
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 hover:shadow-blue-400"
-                onChange={changeEventHandler}
-              />
+              <Input type="text" name="title" value={input.title} placeholder="Job title" className="mt-1" onChange={changeEventHandler} />
             </div>
             <div>
               <Label>Description</Label>
-              <Input
-                name="description"
-                value={input.description}
-                placeholder="Enter job description"
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 hover:shadow-blue-400 "
-                onChange={changeEventHandler}
-              />
+              <Input name="description" value={input.description} placeholder="Job description" className="mt-1" onChange={changeEventHandler} />
             </div>
             <div>
               <Label>Location</Label>
-              <Input
-                type="text"
-                name="location"
-                value={input.location}
-                placeholder="Enter job location"
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 hover:shadow-blue-400"
-                onChange={changeEventHandler}
-              />
+              <Input type="text" name="location" value={input.location} placeholder="Location" className="mt-1" onChange={changeEventHandler} />
             </div>
             <div>
               <Label>Salary</Label>
-              <Input
-                type="number"
-                name="salary"
-                value={input.salary}
-                placeholder="Enter job salary"
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 hover:shadow-blue-400"
-                onChange={changeEventHandler}
-              />
+              <Input type="number" name="salary" value={input.salary} placeholder="Salary" className="mt-1" onChange={changeEventHandler} />
             </div>
             <div>
               <Label>Position</Label>
-              <Input
-                type="number"
-                name="position"
-                value={input.position}
-                placeholder="Enter job position"
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 hover:shadow-blue-400"
-                onChange={changeEventHandler}
-              />
+              <Input type="number" name="position" value={input.position} placeholder="Open positions" className="mt-1" onChange={changeEventHandler} />
             </div>
             <div>
               <Label>Requirements</Label>
-              <Input
-                type="text"
-                name="requirements"
-                value={input.requirements}
-                placeholder="Enter job requirements"
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 hover:shadow-blue-400"
-                onChange={changeEventHandler}
-              />
+              <Input type="text" name="requirements" value={input.requirements} placeholder="Requirements" className="mt-1" onChange={changeEventHandler} />
             </div>
-
             <div>
               <Label>Experience</Label>
-              <Input
-                type="number"
-                name="experience"
-                value={input.experience}
-                placeholder="Enter job experience"
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 hover:shadow-blue-400"
-                onChange={changeEventHandler}
-              />
+              <Input type="number" name="experience" value={input.experience} placeholder="Years" className="mt-1" onChange={changeEventHandler} />
             </div>
             <div>
               <Label>Job Type</Label>
-              <Input
-                type="text"
-                name="jobType"
-                value={input.jobType}
-                placeholder="Enter job type"
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 hover:shadow-blue-400"
-                onChange={changeEventHandler}
-              />
+              <Input type="text" name="jobType" value={input.jobType} placeholder="Full-time, Remote..." className="mt-1" onChange={changeEventHandler} />
             </div>
-
-            <div>
-              {companies.length > 0 && (
+            <div className="sm:col-span-2">
+              <Label>Company</Label>
+              {companies.length > 0 ? (
                 <Select onValueChange={selectChangeHandler}>
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-full mt-1">
                     <SelectValue placeholder="Select a Company" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       {companies.map((company) => (
-                        <SelectItem
-                          key={company._id}
-                          value={company.name.toLowerCase()}
-                        >
+                        <SelectItem key={company._id} value={company.name.toLowerCase()}>
                           {company.name}
                         </SelectItem>
                       ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+              ) : (
+                <p className="text-sm text-red-600 mt-2">Register a company first to post jobs.</p>
               )}
             </div>
           </div>
-          <div className="flex items-center justify-center mt-5">
+          <div className="mt-5 sm:mt-6">
             {loading ? (
-              <Button className="w-full px-4 py-2 text-sm text-white bg-black rounded-md ">
-                {" "}
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{" "}
+              <Button className="w-full" disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
               </Button>
             ) : (
-              <Button
-                type="submit"
-                className="w-full px-4 py-2 text-sm text-white bg-black rounded-md hover:bg-blue-600"
-              >
+              <Button type="submit" className="w-full bg-black hover:bg-blue-600">
                 Post Job
               </Button>
             )}
           </div>
-          {companies.length === 0 && (
-            <p className="text-sm font-bold my-3 text-center text-red-600">
-              *Please register a company to post jobs.*
-            </p>
-          )}
         </form>
       </div>
     </div>

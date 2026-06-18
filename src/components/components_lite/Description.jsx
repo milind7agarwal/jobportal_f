@@ -105,45 +105,42 @@ const Description = () => {
     <div className="min-h-screen bg-slate-50/50 pb-16">
       <Navbar />
       
-      <div className="max-w-5xl mx-auto px-4 mt-8">
+      <div className="max-w-5xl mx-auto px-3 sm:px-4 mt-4 sm:mt-8">
         
-        {/* --- HERO HEADER SECTION --- */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 md:p-8 mb-8 relative overflow-hidden">
+        <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 relative overflow-hidden">
           {/* Subtle background decorative accent */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-500/10 to-transparent rounded-bl-full pointer-events-none" />
 
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
                 {singleJob?.title || "Job Title"}
               </h1>
               
-              {/* Badges Layout */}
-              <div className="flex flex-wrap gap-2 items-center mt-4">
-                <Badge className="bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold px-3 py-1 border-0" variant="outline">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 items-center mt-3 sm:mt-4">
+                <Badge className="bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold px-2 sm:px-3 py-0.5 sm:py-1 border-0 text-[10px] sm:text-xs" variant="outline">
                   {singleJob?.position || 0} Openings
                 </Badge>
-                <Badge className="bg-orange-50 text-orange-700 hover:bg-orange-100 font-semibold px-3 py-1 border-0" variant="outline">
+                <Badge className="bg-orange-50 text-orange-700 hover:bg-orange-100 font-semibold px-2 sm:px-3 py-0.5 sm:py-1 border-0 text-[10px] sm:text-xs" variant="outline">
                   {singleJob?.salary ? `${singleJob.salary} LPA` : "Not Disclosed"}
                 </Badge>
-                <Badge className="bg-purple-50 text-purple-700 hover:bg-purple-100 font-semibold px-3 py-1 border-0" variant="outline">
+                <Badge className="bg-purple-50 text-purple-700 hover:bg-purple-100 font-semibold px-2 sm:px-3 py-0.5 sm:py-1 border-0 text-[10px] sm:text-xs" variant="outline">
                   {singleJob?.location || "Remote"}
                 </Badge>
-                <Badge className="bg-slate-100 text-slate-800 hover:bg-slate-200 font-semibold px-3 py-1 border-0" variant="outline">
+                <Badge className="bg-slate-100 text-slate-800 hover:bg-slate-200 font-semibold px-2 sm:px-3 py-0.5 sm:py-1 border-0 text-[10px] sm:text-xs" variant="outline">
                   {singleJob?.jobType || "Full-Time"}
                 </Badge>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="w-full md:w-auto shrink-0">
               <Button
                 onClick={isApplied ? null : applyJobHandler}
                 disabled={isApplied}
-                className={`w-full md:w-auto px-8 py-6 rounded-xl font-medium tracking-wide transition-all duration-200 shadow-sm ${
+                className={`w-full md:w-auto px-6 sm:px-8 py-5 sm:py-6 rounded-xl font-medium text-sm sm:text-base ${
                   isApplied
                     ? "bg-emerald-100 text-emerald-800 border border-emerald-200 cursor-not-allowed hover:bg-emerald-100"
-                    : "bg-[#6B3AC2] text-white hover:bg-[#552d9b] hover:shadow-purple-200 hover:shadow-lg"
+                    : "bg-[#6B3AC2] text-white hover:bg-[#552d9b]"
                 }`}
               >
                 {isApplied ? "✓ Already Applied" : "Apply Now"}
@@ -152,22 +149,19 @@ const Description = () => {
           </div>
         </div>
 
-        {/* --- MAIN CONTENT SPLIT --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           
-          {/* Left Side: Description */}
-          <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-6 md:p-8">
-            <h2 className="text-lg font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100">
+          <div className="lg:col-span-2 bg-white rounded-xl sm:rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-6 md:p-8 order-2 lg:order-1">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-3 sm:mb-4 pb-2 border-b border-slate-100">
               Job Description
             </h2>
-            <p className="text-slate-600 leading-relaxed whitespace-pre-line text-[15px]">
+            <p className="text-slate-600 leading-relaxed whitespace-pre-line text-sm sm:text-[15px]">
               {singleJob?.description || "No description provided for this role."}
             </p>
           </div>
 
-          {/* Right Side: Key Metadata Matrix Card */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 h-fit">
-            <h2 className="text-lg font-bold text-slate-900 mb-5">
+          <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-6 h-fit order-1 lg:order-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-4 sm:mb-5">
               Job Overview
             </h2>
             

@@ -75,7 +75,7 @@ const EditProfileModal = ({ open, setOpen }) => {
 return (
     <div>
       <Dialog open={open}>
-        <DialogContent className="sm:max-w-[425px]" onInteractOutside={() => setOpen(false)}>
+        <DialogContent className="w-[calc(100vw-2rem)] max-w-[425px] max-h-[90vh] overflow-y-auto" onInteractOutside={() => setOpen(false)}>
             <DialogHeader>
                 <DialogTitle>Edit Profile</DialogTitle>
                 <DialogDescription>

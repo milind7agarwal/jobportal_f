@@ -76,10 +76,10 @@ const Register = () => {
   return (
     <div>
       <Navbar></Navbar>
-      <div className="flex items-center justify-center max-w-7xl mx-auto">
+      <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-8">
         <form
           onSubmit={submitHandler}
-          className="w-1/2 border border-gray-500 rounded-md p-4 my-10"
+          className="w-full max-w-md border border-gray-300 rounded-xl p-5 sm:p-6 shadow-sm bg-white"
         >
           <h1 className="font-bold text-xl mb-5 text-center text-blue-600">
             Sign Up
@@ -124,8 +124,8 @@ const Register = () => {
               placeholder="+1234567890"
             ></Input>
           </div>
-          <div className="flex items-center justify-between">
-            <RadioGroup className="flex items-center gap-4 my-5 ">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 my-4">
+            <RadioGroup className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
               <div className="flex items-center space-x-2">
                 <Input
                   type="radio"
@@ -150,13 +150,13 @@ const Register = () => {
               </div>
             </RadioGroup>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-2 my-2">
             <Label>Profile Photo</Label>
             <Input
               type="file"
               accept="image/*"
               onChange={ChangeFilehandler}
-              className="cursor-pointer"
+              className="cursor-pointer text-sm"
             />
           </div>
           {loading ? (
