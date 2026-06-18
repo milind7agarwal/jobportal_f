@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
 import { InterviewContext } from "../interview.context";
 import {
   generateInterviewReport,
@@ -19,71 +19,73 @@ export const useInterview = () => {
     setReport,
     reports,
     setReports,
-    error, 
+    error,
     setError
   } = context;
 
-  const generateReport = async ({ jobDescription, selfDescription, resumeFile }) => {
+  const generateReport = useCallback(async ({ jobDescription, selfDescription, resumeFile }) => {
     setLoading(true);
     setError(null);
 
-    let response = null;
     try {
-      response = await generateInterviewReport({ jobDescription, selfDescription, resumeFile });
+      const response = await generateInterviewReport({ jobDescription, selfDescription, resumeFile });
       setReport(response.interviewReport);
-    } catch (error) {
-      console.log(error);
-      setError(
+      return response.interviewReport;
+    } catch (err) {
+      console.error(err);
+      const message =
         err.response?.data?.message ||
         err.message ||
-        "Something went wrong."
-    );
+        "Something went wrong.";
+      setError(message);
+      throw err;
     } finally {
       setLoading(false);
     }
-    return response?.interviewReport;
-  };
+  }, [setLoading, setError, setReport]);
 
-  const getReportById = async (interviewId) => {
+  const getReportById = useCallback(async (interviewId) => {
     setLoading(true);
     setError(null);
-    let response = null;
+    setReport(null);
+
     try {
-      response = await getInterviewReportById(interviewId);
+      const response = await getInterviewReportById(interviewId);
       setReport(response.interviewReport);
-    } catch (error) {
-      console.log(error);
-      setError(
+      return response.interviewReport;
+    } catch (err) {
+      console.error(err);
+      const message =
         err.response?.data?.message ||
         err.message ||
-        "Something went wrong."
-    );
+        "Something went wrong.";
+      setError(message);
+      throw err;
     } finally {
       setLoading(false);
     }
-    return response?.interviewReport;
-  };
+  }, [setLoading, setError, setReport]);
 
-  const getReports = async () => {
+  const getReports = useCallback(async () => {
     setLoading(true);
     setError(null);
-    let response = null;
+
     try {
-      response = await getAllInterviewReports();
-      // backend returns: { message, interviewReports, status: true }
+      const response = await getAllInterviewReports();
       setReports(response.interviewReports);
-    } catch (error) {
-      console.log(error);
-      setError(
+      return response.interviewReports;
+    } catch (err) {
+      console.error(err);
+      const message =
         err.response?.data?.message ||
         err.message ||
-        "Something went wrong."
-    );
+        "Something went wrong.";
+      setError(message);
+      throw err;
     } finally {
       setLoading(false);
     }
-    return response?.interviewReports;
-  };
+  }, [setLoading, setError, setReports]);
 
   return {
     loading,
@@ -95,4 +97,3 @@ export const useInterview = () => {
     getReports,
   };
 };
-

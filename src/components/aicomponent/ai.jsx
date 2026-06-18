@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { UploadCloud, Info, Briefcase, User, FileText, X } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // Removed unused useParams
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { useInterview } from "@/hooks/useInterview";
 import { toast } from "sonner";
 
@@ -9,7 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import Navbar from '../components_lite/Navbar';
 
 const ResumeAI = () => {
-    const { loading, setLoading, generateReport } = useInterview();
+    const { loading, generateReport } = useInterview();
+    const { user } = useSelector((store) => store.auth);
     const [jobDescription, setJobDescription] = useState("");
     const [selfDescription, setSelfDescription] = useState("");
     const [selectedFileName, setSelectedFileName] = useState("");
@@ -33,15 +35,19 @@ const ResumeAI = () => {
     };
 
     const handleGenerateReport = async () => {
+        if (!user) {
+            toast.error("Please log in to generate an AI report.");
+            navigate("/login");
+            return;
+        }
+
         const resumeFile = resumeInputRef.current?.files[0] || null;
 
-        // FIXED: Resolved the broken toast syntax error
         if (!jobDescription.trim()) {
             toast.error("Job description is required.");
             return;
         }
         
-        // FIXED: Swapped out browser alert for a modern sonner toast
         if (!resumeFile && !selfDescription.trim()) {
             toast.error("Please provide either a resume file or a short self-description.");
             return;
@@ -49,15 +55,16 @@ const ResumeAI = () => {
 
         try {
             const data = await generateReport({ jobDescription, selfDescription, resumeFile });
-            if (data && data._id) {
+            if (data?._id) {
                 toast.success("Interview strategy created successfully!");
                 navigate(`/interview/${data._id}`);
+                return;
             }
+            toast.error("Report was created but could not be opened. Please try again.");
         } catch (error) {
             console.error("Failed to generate report:", error);
-            setLoading(false);
             const backendMessage = error?.response?.data?.message;
-            toast.error(backendMessage || "Heavy load on gemini server. Please try again later");
+            toast.error(backendMessage || "Failed to generate report. Please try again later.");
         }
     };
 
@@ -139,7 +146,7 @@ const ResumeAI = () => {
                                         type='file' 
                                         id='resume' 
                                         name='resume' 
-                                        accept='.pdf,.docx'
+                                        accept='.pdf'
                                         onChange={handleFileChange}
                                     />
                                     
@@ -149,7 +156,7 @@ const ResumeAI = () => {
                                                 <UploadCloud className="w-6 h-6 text-purple-600" />
                                             </div>
                                             <p className="text-sm font-semibold text-slate-700">Click to upload or drag & drop</p>
-                                            <p className="text-xs text-slate-500 mt-1">PDF or DOCX (Max 5MB)</p>
+                                            <p className="text-xs text-slate-500 mt-1">PDF only (Max 5MB)</p>
                                         </>
                                     ) : (
                                         <div className="flex flex-col items-center text-center">

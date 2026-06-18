@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useInterview } from '@/hooks/useInterview';
-import { useParams, Link } from 'react-router-dom'; // Swapped useNavigate for Link if you want breadcrumbs
+import { useParams, Link } from 'react-router-dom';
 
 import { ChevronDown, Code, MessageSquare, Compass, ArrowLeft, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import Navbar from '../components_lite/Navbar';
@@ -11,7 +11,6 @@ const NAV_ITEMS = [
     { id: 'roadmap', label: 'Road Map', icon: <Compass className="w-4 h-4" /> },
 ];
 
-// ── Sub-components ────────────────────────────────────────────────────────────
 const QuestionCard = ({ item, index }) => {
     const [open, setOpen] = useState(false);
     
@@ -85,24 +84,56 @@ const RoadMapDay = ({ day, isLast }) => (
 // ── Main Component ────────────────────────────────────────────────────────────
 const Report = () => {
     const [activeNav, setActiveNav] = useState('technical');
-    // CLEANED: Removed unused variables to save bundle noise
-    const { report, getReportById, loading } = useInterview();
+    const { report, getReportById, loading, error } = useInterview();
     const { interviewId } = useParams();
 
     useEffect(() => {
-        if (interviewId) {
-            getReportById(interviewId);
-        }
-    }, [interviewId]);
+        if (!interviewId) return;
+        if (String(report?._id) === String(interviewId)) return;
+        getReportById(interviewId);
+    }, [interviewId, report?._id, getReportById]);
 
-    // Added alternative utility: Download parsed content as a text file asset 
-
-    if (loading || !report) {
+    if (loading) {
         return (
             <main className="min-h-screen bg-white flex flex-col items-center justify-center">
                 <div className="animate-pulse space-y-4 text-center">
                     <h1 className="text-xl font-bold text-slate-700">Loading your interview plan...</h1>
                     <div className="w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                </div>
+            </main>
+        );
+    }
+
+    if (error && !report) {
+        return (
+            <main className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
+                <div className="max-w-md text-center space-y-4">
+                    <AlertTriangle className="w-10 h-10 text-red-500 mx-auto" />
+                    <h1 className="text-xl font-bold text-slate-800">Could not load report</h1>
+                    <p className="text-slate-600">{error}</p>
+                    <Link
+                        to="/ai"
+                        className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+                    >
+                        Back to AI Report
+                    </Link>
+                </div>
+            </main>
+        );
+    }
+
+    if (!report) {
+        return (
+            <main className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
+                <div className="max-w-md text-center space-y-4">
+                    <h1 className="text-xl font-bold text-slate-800">Report not found</h1>
+                    <p className="text-slate-600">This interview report does not exist or you do not have access to it.</p>
+                    <Link
+                        to="/ai"
+                        className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+                    >
+                        Create a New Report
+                    </Link>
                 </div>
             </main>
         );
