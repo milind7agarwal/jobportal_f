@@ -122,7 +122,7 @@ const Description = () => {
                   {singleJob?.position || 0} Openings
                 </Badge>
                 <Badge className="bg-orange-50 text-orange-700 hover:bg-orange-100 font-semibold px-2 sm:px-3 py-0.5 sm:py-1 border-0 text-[10px] sm:text-xs" variant="outline">
-                  {singleJob?.salary ? `${singleJob.salary} LPA` : "Not Disclosed"}
+                  {singleJob?.salary ? `${singleJob.salary} $` : "Not Disclosed"}
                 </Badge>
                 <Badge className="bg-purple-50 text-purple-700 hover:bg-purple-100 font-semibold px-2 sm:px-3 py-0.5 sm:py-1 border-0 text-[10px] sm:text-xs" variant="outline">
                   {singleJob?.location || "Remote"}
