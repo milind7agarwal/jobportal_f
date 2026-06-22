@@ -2,6 +2,9 @@
 
 A full-stack **job portal** with authentication, job browsing, admin/company management, job applications, and AI-assisted resume/interview features.
 
+frontend link = https://jobportal-one-kohl.vercel.app/
+backend link = https://jobportal-b-8qo9.onrender.com
+
 ## Tech Stack
 
 - **Frontend:** React + Vite, React Router, Redux Toolkit
